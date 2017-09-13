@@ -1,0 +1,15 @@
+<% include ../partials/header %>
+
+<div class="container">
+    <form action="/categories/<%= category._id %>/posts" method="post">
+        <input type="text" name="post[title]" placeholder="Title">
+        <input type="text" name="post[description]" placeholder="Description">
+        <input type="text" name="post[image]" placeholder="Image">
+        <input type="text" name="post[price]" placeholder="Price">
+        <button type="submit" class="bth btn-primary">Post</button>
+    </form>
+</div>
+
+
+
+<% include ../partials/footer %>

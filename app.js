@@ -14,7 +14,7 @@ var categoryRoutes = require("./routes/categories"),
 //APP CONFIG
     
 // parse application/x-www-form-urlencoded 
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(methodOverride("_method"));
 app.set("view engine", "ejs");
@@ -27,27 +27,28 @@ var promise = mongoose.connect("mongodb://localhost/sharelyfe_db", {
 promise.then();
 // use routes
 app.use("/categories",categoryRoutes);
-app.use("/categories/:id/posts", postRoutes);
+app.use('/categories/:id/posts', postRoutes);
 app.use(authRoutes);
 
 //put in some data
-var newPost = new Post({
-    title: 'Water Skis',
-    image: 'awesome image',
-    description: 'you should buy this',
-    price: '$100'
-})
+// var newPost = new Post({
+//     title: 'Water Skis',
+//     image: 'awesome image',
+//     description: 'you should buy this',
+//     price: '$100'
+// });
 
-newPost.save();
+// newPost.save();
 
-Category.findOne({name: 'Recreation'}, function(err, foundCategory) {
-    if (err) {
-        console.log(err);
-    } else {
-        foundCategory.posts.push(newPost);
-        foundCategory.save();
-    }
-});
+// Category.findOne({name: 'Recreation'}, function(err, foundCategory) {
+//     if (err) {
+//         console.log(err);
+//     } else {
+//         foundCategory.posts.push(newPost);
+//         foundCategory.save();
+//         console.log(foundCategory);
+//     }
+// });
 
 
 
