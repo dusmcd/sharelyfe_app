@@ -12,6 +12,11 @@
         <div class="col-md-6"><%= post.description %></div>
         <div class="col-md-6"><%= post.price %></div>
     </div>
+    
+    <a href='/categories/<%= category_id %>/posts/<%= post._id %>/edit' class='btn btn-info'>Edit Post</a>
+    <form action='/categories/<%- category_id %>/posts/<%= post._id %>/?_method=DELETE' method="post">
+        <button type="submit" class="btn btn-danger">Delete Post</button>
+    </form>
 </div>
 
 

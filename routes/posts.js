@@ -37,18 +37,48 @@ router.get("/:post_id", function(req, res) {
         if(err) {
             console.log(err);
         } else {
-            res.render("posts/show", {post: post});
+            res.render("posts/show", {post: post, category_id: req.params.id});
         }
     });
 });
 
-//edit routes 
+//update routes 
 router.get("/:post_id/edit", function(req, res) {
-    res.render("posts/edit");
+    Post.findById(req.params.post_id, function(err, post) {
+        if (err) {
+            console.log(err);
+            res.redirect('/');
+        } else {
+            res.render('posts/edit', {post: post, category_id: req.params.id});
+        }
+    });
+    
+    
 });
 
 router.put("/:post_id", function(req, res) {
-    res.send("This is the update route for a post");
+    Post.findByIdAndUpdate(req.params.post_id, req.body.post, function(err, updatedPost) {
+        if (err) {
+            console.log(err);
+            res.redirect('/');
+        } else {
+            console.log(updatedPost);
+            res.redirect('/');
+        }
+    });
+});
+
+//destroy route
+
+router.delete('/:post_id', function(req, res) {
+    Post.findByIdAndRemove(req.params.post_id, function(err) {
+        if (err) {
+            console.log(err);
+            res.redirect('/');
+        } else {
+            res.redirect('/');
+        }
+    });
 });
 
 module.exports = router;

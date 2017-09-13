@@ -1,8 +1,7 @@
 var express = require("express"),
-    router  = express.Router(),
+    router  = express.Router({mergeParms: true}),
     Category = require("../models/category");
     
-//routes
 
 //index route for categories
 router.get('/', function(req, res) {
@@ -15,6 +14,8 @@ router.get('/', function(req, res) {
         }
     });
 });
+
+//create routes
 
 router.get("/new", function(req, res) {
     res.render("categories/new");
@@ -30,13 +31,14 @@ router.post("/", function(req, res) {
     });
 });
 
+//show route
 router.get("/:id", function(req, res) {
-    Category.findById(req.params.id, function(err, category) {
-        if(err) {
+    Category.findById(req.params.id).populate('posts').exec(function(err, category) {
+        if (err) {
             console.log(err);
+            res.redirect('/');
         } else {
-            var posts = category.posts;
-            res.render("categories/show", {category: category, posts: posts});
+            res.render('categories/show', {category: category});
         }
     });
 });
