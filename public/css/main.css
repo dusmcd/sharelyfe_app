@@ -1,0 +1,36 @@
+html, body {
+    height: 100%;
+}
+
+.space-boxes {
+    margin: 0 10px;
+}
+
+.navbar-light .navbar-nav .nav-link {
+    color: black;
+}
+
+.home-page {
+    margin-top: 5%;
+}
+
+.catch-phrase {
+    text-align: center;
+}
+
+.categories {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.one-category {
+    background-color: #3399ff;
+    padding: 60px;
+    width: 23%;
+    margin: 5px 1%;
+}
+
+.one-category a {
+    color: white;
+}

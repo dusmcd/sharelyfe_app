@@ -1,0 +1,20 @@
+<% include ../partials/header %>
+
+<div class="container">
+    <h1><%= post.title %></h1>
+    <section class="row">
+        <div class="col-md-12">
+            <img src="#" alt="<%= post.image %>" class="img-fluid">
+        </div>
+    </section>
+    
+    <div class="row">
+        <div class="col-md-6"><%= post.description %></div>
+        <div class="col-md-6"><%= post.price %></div>
+    </div>
+</div>
+
+
+
+
+<% include ../partials/footer %>

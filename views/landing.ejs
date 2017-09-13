@@ -1,0 +1,13 @@
+<% include partials/header %>
+
+<div class="container home-page">
+    <h2 class="catch-phrase">Don't Just Live Life. <em>Share Lyfe</em></h3>
+    <hr>
+    <div class="categories">
+        <% categories.forEach(function(category) { %>
+            <div class="one-category"><a href="/categories/<%= category._id %>"><%= category.name; %></a></div>
+        <% }); %>
+    </div>
+</div>
+
+<% include partials/footer %>
