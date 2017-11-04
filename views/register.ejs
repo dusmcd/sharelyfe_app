@@ -1,0 +1,27 @@
+<% include partials/header %>
+
+<div class="container">
+    <form action="/register" method="post">
+        <div class="form-group">
+            <input type="text" placeholder="First Name" name="firstName" class="form-control">
+        </div>
+        <div class="form-group">
+            <input type="text" placeholder="Last Name" name="lastName" class="form-control">
+        </div>
+        <div class="form-group">
+            <input type="email" placeholder="E-mail address" name="email" class="form-control">
+        </div>
+        <div class="form-group">
+            <input type="text" placeholder="Phone Number" name="phoneNumber" class="form-control">
+        </div>
+        <div class="form-group">
+            <input type="text" placeholder="Please create a username" name="username" class="form-control">
+        </div>
+        <div class="form-group">
+            <input type="password" placeholder="Please create a password" name="password" class="form-control">
+        </div>
+        <button type="submit">Submit</button>
+    </form>
+</div>
+
+<% include partials/footer %>
