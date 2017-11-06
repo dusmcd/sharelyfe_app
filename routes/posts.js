@@ -3,7 +3,6 @@ var express = require("express"),
     Category = require("../models/category"),
     Post    = require("../models/post");
     
-    
 //create routes    
 router.get("/new", function(req, res) {
     Category.findById(req.params.id, function(err, category) {
