@@ -8,6 +8,15 @@
             <div class="one-category"><a href="/categories/<%= category._id %>"><%= category.name; %></a></div>
         <% }); %>
     </div>
+    <hr>
+    <div class="posts">
+        <% posts.forEach(function(post) { %>
+            <div class="one-post">
+                <img src="<%= post.image %>" class="img-thumbnail">
+                <h5><%= post.title %></h5>
+            </div>
+        <% }) %>
+    </div>
 </div>
 
 <% include partials/footer %>

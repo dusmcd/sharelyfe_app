@@ -26,7 +26,7 @@ router.post("/", function(req, res) {
         } else {
             category.posts.push(newPost);
             category.save();
-            res.redirect('/');
+            res.redirect('/categories/'+req.params.id +'/posts/'+newPost._id);
         }
     });
 });
@@ -62,8 +62,7 @@ router.put("/:post_id", function(req, res) {
             console.log(err);
             res.redirect('/');
         } else {
-            console.log(updatedPost);
-            res.redirect('/');
+            res.redirect('/categories/' + req.params.id + '/posts/' + req.params.post_id);
         }
     });
 });

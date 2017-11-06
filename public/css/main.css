@@ -1,13 +1,21 @@
+/*entire app styles*/
+
 html, body {
     height: 100%;
 }
+/*entire app styles*/
+
+
+/*nav bar styles*/
+.navbar-light .navbar-nav .nav-link {
+    color: black;
+}
+/*nav bar styles*/
+
+/*landing page styles*/
 
 .space-boxes {
     margin: 0 10px;
-}
-
-.navbar-light .navbar-nav .nav-link {
-    color: black;
 }
 
 .home-page {
@@ -26,11 +34,30 @@ html, body {
 
 .one-category {
     background-color: #3399ff;
-    padding: 60px;
+    /*padding: 60px;*/
     width: 23%;
     margin: 5px 1%;
 }
 
 .one-category a {
     color: white;
+}
+
+.posts {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.one-post {
+    width: 30%;
+    margin: 0 1.66%;
+}
+
+/*landing page styles*/
+
+/*show view: posts*/
+.buttons {
+    display: inline-block;
+    padding: 5px;
 }

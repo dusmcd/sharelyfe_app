@@ -1,6 +1,7 @@
 var express = require("express"),
     router  = express.Router(),
     Category = require("../models/category"),
+    Post    = require('../models/post'),
     User    = require('../models/user'),
     passport = require('passport');
 
@@ -10,13 +11,19 @@ var express = require("express"),
 
 router.get("/", function(req, res) {
     Category.find({}, function(err, categories) {
-        if (err){
+        if (err) {
             console.log(err);
         } else {
-            res.render("landing", {categories: categories});
+            Post.find({}, function(err, posts) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    res.render('landing', {categories: categories, posts: posts});
+                }
+            });
         }
     });
-
+    
 });
 
 router.get('/register', function(req, res) {
@@ -53,6 +60,5 @@ router.post('/logout', function(req, res) {
     req.logout();
     res.redirect('/');
 });
-
 
 module.exports = router;

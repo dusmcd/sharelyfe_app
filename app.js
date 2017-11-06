@@ -3,12 +3,11 @@ var express = require("express"),
     bodyParser = require("body-parser"),
     methodOverride = require("method-override"),
     mongoose    = require("mongoose"),
-    Category = require("./models/category"),
-    Post = require("./models/post"),
+    // Category = require("./models/category"),
+    // Post = require("./models/post"),
     User = require('./models/user'),
     passport = require('passport'),
-    LocalStrategy = require('passport-local'),
-    GoogleStrategy = require('passport-google-oauth').OAuthStrategy;
+    LocalStrategy = require('passport-local');
     
 //require routes
 var categoryRoutes = require("./routes/categories"),
@@ -16,13 +15,19 @@ var categoryRoutes = require("./routes/categories"),
     postRoutes     = require("./routes/posts");
     
 //APP CONFIG
+
+//current user available for all routes
+app.use(function(req, res, next) {
+    res.locals.currentUser = req.user;
+    next();
+});
     
 // parse application/x-www-form-urlencoded 
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(methodOverride("_method"));
 app.set("view engine", "ejs");
-app.use(express.static("public"));
+app.use(express.static(__dirname + "/public"));
 app.use(require('express-session')({
     secret: 'I read the news today, oh boy.',
     resave: false,
@@ -31,47 +36,23 @@ app.use(require('express-session')({
 app.use(passport.initialize());
 app.use(passport.session());
 
-//config passport google strategy
-
-passport.use(new GoogleStrategy({
-    consumerKey: '770264381842-63n6mu1s6me51qcl9ogm0a186hbffbs5.apps.googleusercontent.com',
-    consumerSecret: 's4L2V6K4IAudfTdd5zppL7xf',
-    callbackURL: "https://sharelyfe-dusmcd.c9users.io/auth/google/callback"
-  },
-  function(token, tokenSecret, profile, done) {
-      User.findOrCreate({ googleId: profile.id }, function (err, user) {
-        return done(err, user);
-      });
-  }
-));
 
 //connect to db
 var promise = mongoose.connect("mongodb://localhost/sharelyfe_db", {
     useMongoClient: true
 });
 promise.then();
+
 // use routes
 app.use("/categories",categoryRoutes);
 app.use('/categories/:id/posts', postRoutes);
 app.use(authRoutes);
-
-
 
 // passport config
 
 passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
-
-app.get('/auth/google', 
-        passport.authenticate('google',{scope: 'https://www.google.com/m8/feeds'})
-        );
-        
-app.get('/auth/google/callback',
-        passport.authenticate('google', {failureRedirect: '/login'}), function(req, res) {
-            res.redirect('/');
-        });
-
 
 //set up server
 app.listen(process.env.PORT, process.env.IP, function() {
