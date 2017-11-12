@@ -4,7 +4,7 @@ var express = require("express"),
     Post    = require("../models/post");
     
 //create routes    
-router.get("/new", function(req, res) {
+router.get("/new", isLoggedIn, function(req, res) {
     Category.findById(req.params.id, function(err, category) {
         if (err) {
             console.log(err);
@@ -15,17 +15,23 @@ router.get("/new", function(req, res) {
     });
 });
 
-router.post("/", function(req, res) {
-    var newPost = new Post(req.body.post);
-    // save post
-    newPost.save();
+router.post("/", isLoggedIn, function(req, res) {
     Category.findById(req.params.id, function(err, category) {
         if(err) {
             console.log(err);
         } else {
-            category.posts.push(newPost);
-            category.save();
-            res.redirect('/categories/'+req.params.id +'/posts/'+newPost._id);
+            Post.create(req.body.post, function(err, newPost) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    newPost.author.id = req.user._id;
+                    newPost.save();
+                    category.posts.push(newPost);
+                    category.save();
+                    res.redirect('/categories/'+req.params.id +'/posts/'+newPost._id);
+                }
+            })
+            
         }
     });
 });
@@ -36,7 +42,8 @@ router.get("/:post_id", function(req, res) {
         if(err) {
             console.log(err);
         } else {
-            res.render("posts/show", {post: post, category_id: req.params.id});
+            res.render("posts/show", 
+            {post: post, category_id: req.params.id, currentUser: req.user});
         }
     });
 });
@@ -78,5 +85,15 @@ router.delete('/:post_id', function(req, res) {
         }
     });
 });
+
+//middleware
+function isLoggedIn(req, res, next) {
+    if (req.isAuthenticated()) {
+        return next();
+    }
+    else {
+        res.redirect('/login');
+    }
+}
 
 module.exports = router;
