@@ -1,4 +1,4 @@
-var express = require("express"),
+const express = require("express"),
     app     = express(),
     bodyParser = require("body-parser"),
     methodOverride = require("method-override"),
@@ -10,7 +10,7 @@ var express = require("express"),
     LocalStrategy = require('passport-local');
     
 //require routes
-var categoryRoutes = require("./routes/categories"),
+const categoryRoutes = require("./routes/categories"),
     authRoutes     = require("./routes/index"),
     postRoutes     = require("./routes/posts");
     
@@ -38,7 +38,7 @@ app.use(passport.session());
 
 
 //connect to db
-var promise = mongoose.connect("mongodb://localhost/sharelyfe_db", {
+const promise = mongoose.connect("mongodb://localhost/sharelyfe_db", {
     useMongoClient: true
 });
 promise.then();
