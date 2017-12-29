@@ -29,12 +29,27 @@
                   <li class="nav-item">
                     <a class="nav-link" href="/categories">List Rental</a>
                   </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="/login">Login</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="/register">Sign Up</a>
-                  </li>
+                  
+                  <!--right heading changes depending on whether user is logged in-->
+                  <% if (!currentUser) { %>
+                    <li class="nav-item">
+                      <a class="nav-link" href="/login">Login</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="/register">Sign Up</a>
+                    </li>
+                  <% }  else { %>
+                    <li class="nav-item">
+                      <a class="nav-link" href="/logout">Hello, <%= currentUser.firstName %></a>
+                    </li>
+                    <li class="nav-item">
+                      <form action="/logout" method="POST">
+                        <a class="nav-link"><button>Logout</button></a>  
+                      </form>
+                    </li>
+                  <% } %>
+                  <!--right heading changes depending on whether user is logged in -->
+                  
                   <li class="nav-item">
                     <a class="nav-link" href="#">Help</a>
                   </li>
