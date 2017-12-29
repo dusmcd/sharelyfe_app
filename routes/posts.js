@@ -20,6 +20,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({storage: storage});
 
+
 //create routes    
 router.get("/new", isLoggedIn, function(req, res) {
     Category.findById(req.params.id, function(err, category) {
@@ -81,7 +82,7 @@ router.get("/:post_id", function(req, res) {
             console.log(err);
         } else {
             res.render("posts/show", 
-            {post: post, category_id: req.params.id, currentUser: req.user});
+            {post: post, category_id: req.params.id});
         }
     });
 });

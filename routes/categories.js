@@ -39,6 +39,7 @@ router.get("/:id", function(req, res) {
             res.redirect('/');
         } else {
             res.render('categories/show', {category: category});
+            console.log(category.posts[0]);
         }
     });
 });
