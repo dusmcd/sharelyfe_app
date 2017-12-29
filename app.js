@@ -24,6 +24,7 @@ app.use(function(req, res, next) {
     
 // parse application/x-www-form-urlencoded 
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 app.use(methodOverride("_method"));
 app.set("view engine", "ejs");

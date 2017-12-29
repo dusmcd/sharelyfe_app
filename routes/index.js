@@ -53,7 +53,7 @@ router.get('/login', function(req, res) {
     res.render('login');
 });
 router.post('/login', passport.authenticate('local'), function(req, res) {
-    res.send('You are now logged in.');
+    res.redirect('/');
 });
 
 router.post('/logout', function(req, res) {

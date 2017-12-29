@@ -1,0 +1,23 @@
+<% include ../partials/header %>
+
+<body>
+    <div class='container'>
+        <form
+            action='/categories/<%= category_id %>/posts/<%= post_id %>/upload'
+            method='POST'
+            enctype='multipart/form-data'>
+            
+            <div class='form-group'>
+                <label for='image'>Upload Image</label>
+                <input type='file' name='upl' id='image'>    
+            </div>
+            <button type='submit' class='btn btn-primary'>Upload</button>
+        </form>
+    </div>
+</body>
+
+
+
+
+
+<% include ../partials/footer %>

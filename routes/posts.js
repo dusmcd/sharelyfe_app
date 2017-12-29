@@ -1,8 +1,25 @@
 var express = require("express"),
     router  = express.Router({mergeParams: true}),
+    multer = require('multer'),
     Category = require("../models/category"),
     Post    = require("../models/post");
     
+
+//congifure multer for image uploading
+
+const storage = multer.diskStorage({
+    destination: function(req, file, cb) {
+        cb(null, './public/image');
+    },
+    filename: function(req, file, cb) {
+        let mimeType = file.mimetype;
+        const fileExtension = mimeType.slice(mimeType.search('/') + 1, mimeType.length);
+        cb(null, file.fieldname + '-' + Date.now() + '.' + fileExtension);
+    }
+});
+
+const upload = multer({storage: storage});
+
 //create routes    
 router.get("/new", isLoggedIn, function(req, res) {
     Category.findById(req.params.id, function(err, category) {
@@ -28,10 +45,31 @@ router.post("/", isLoggedIn, function(req, res) {
                     newPost.save();
                     category.posts.push(newPost);
                     category.save();
-                    res.redirect('/categories/'+req.params.id +'/posts/'+newPost._id);
+                    console.log(newPost);
+                    res.redirect('/categories/'+req.params.id +'/posts/'+ newPost._id + '/upload');
                 }
-            })
+            });
             
+        }
+    });
+});
+
+//routes to upload image to newly created post
+router.get('/:post_id/upload', function(req, res) {
+    res.render('posts/upload', {category_id: req.params.id, post_id: req.params.post_id});
+});
+
+router.post('/:post_id/upload', upload.single('upl'), function(req, res) {
+    Post.findById(req.params.post_id, function(err, post) {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log(req.file);
+            post.image.push(req.file.filename);
+            post.save();
+            console.log(post);
+            // res.redirect('/');
+            res.redirect('/categories/' + req.params.id + '/posts/' + post._id);
         }
     });
 });

@@ -2,9 +2,11 @@
 
 <div class="container">
     <h1><%= post.title %></h1>
+    <h3><%= currentUser %></h3>
+    <h4><%= post.author %></h4>
     <section class="row">
         <div class="col-md-12">
-            <img src="<%= post.image %>" class="img-fluid">
+            <img src="/image/<%= post.image[0] %>" class="img-fluid">
         </div>
     </section>
     
