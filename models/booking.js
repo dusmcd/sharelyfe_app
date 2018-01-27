@@ -7,7 +7,8 @@ const bookingSchema = mongoose.Schema({
             ref: 'User'
         }
     },
-    confirmation: Boolean
+    date: Date,
+    payment: String
     
 }, {timestamps: true});
 

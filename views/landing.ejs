@@ -1,7 +1,7 @@
 <% include partials/header %>
 
 <div class="container home-page">
-    <h2 class="catch-phrase">Don't Just Live Life. <em>Share Lyfe</em></h3>
+    <h2 class="catch-phrase">Don't Just Live Life. <em>ShareLyfe</em></h3>
     <hr>
     <div class="categories">
         <% categories.forEach(function(category) { %>
@@ -12,7 +12,7 @@
     <div class="posts">
         <% posts.forEach(function(post) { %>
             <div class="one-post">
-                <img src="<%= post.image %>" class="img-thumbnail">
+                <img src="/image/<%= post.image %>" class="img-thumbnail">
                 <a href='/posts/<%= post._id %>'><h5><%= post.title %></h5></a>
             </div>
         <% }) %>

@@ -2,8 +2,6 @@
 
 <div class="container">
     <h1><%= post.title %></h1>
-    <h3><%= currentUser %></h3>
-    <h4><%= post.author %></h4>
     <section class="row">
         <div class="col-md-12">
             <img src="/image/<%= post.image[0] %>" class="img-fluid">
@@ -12,12 +10,16 @@
     
     <div class="row">
         <div class="col-md-6"><%= post.description %></div>
-        <div class="col-md-6"><%= post.price %></div>
+        <div class="col-md-3"><%= post.price %></div>
+        <div class="col-md-3"><a href='/categories/<%= category_id %>/posts/<%= post._id %>/bookings/new'
+                               class='btn btn-primary'>
+                               Make Reservation</a>
+        </div>
     </div>
     <!--only the author can see edit and delete buttons-->
     <% if (currentUser !== undefined && String(currentUser._id) === String(post.author.id)) { %>
         <a href='/categories/<%= category_id %>/posts/<%= post._id %>/edit' class='btn btn-sm btn-info buttons'>Edit Post</a>
-        <form action='/categories/<%- category_id %>/posts/<%= post._id %>/?_method=DELETE' method="post" class="buttons">
+        <form action='/categories/<%= category_id %>/posts/<%= post._id %>/?_method=DELETE' method="post" class="buttons">
             <button type="submit" class="btn btn-sm btn-danger">Delete Post</button>
         </form>    
     <% }; %>

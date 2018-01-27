@@ -46,7 +46,6 @@ router.post("/", isLoggedIn, function(req, res) {
                     newPost.save();
                     category.posts.push(newPost);
                     category.save();
-                    console.log(newPost);
                     res.redirect('/categories/'+req.params.id +'/posts/'+ newPost._id + '/upload');
                 }
             });
@@ -65,10 +64,8 @@ router.post('/:post_id/upload', upload.single('upl'), function(req, res) {
         if (err) {
             console.log(err);
         } else {
-            console.log(req.file);
             post.image.push(req.file.filename);
             post.save();
-            console.log(post);
             // res.redirect('/');
             res.redirect('/categories/' + req.params.id + '/posts/' + post._id);
         }

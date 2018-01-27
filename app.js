@@ -1,19 +1,20 @@
-const express = require("express"),
+const express = require('express'),
     app     = express(),
-    bodyParser = require("body-parser"),
+    bodyParser = require('body-parser'),
     cookieParser = require('cookie-parser'),
-    methodOverride = require("method-override"),
-    mongoose    = require("mongoose"),
-    Category = require("./models/category"),
-    // Post = require("./models/post"),
+    methodOverride = require('method-override'),
+    mongoose    = require('mongoose'),
+    Category = require('./models/category'),
+    // Post = require('./models/post'),
     User = require('./models/user'),
     passport = require('passport'),
     LocalStrategy = require('passport-local');
     
 //require routes
-const categoryRoutes = require("./routes/categories"),
-    authRoutes     = require("./routes/index"),
-    postRoutes     = require("./routes/posts");
+const categoryRoutes = require('./routes/categories'),
+    authRoutes     = require('./routes/index'),
+    postRoutes     = require('./routes/posts'),
+    bookingRoutes  = require('./routes/bookings');
     
 //APP CONFIG
 
@@ -21,9 +22,9 @@ const categoryRoutes = require("./routes/categories"),
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-app.use(methodOverride("_method"));
-app.set("view engine", "ejs");
-app.use(express.static(__dirname + "/public"));
+app.use(methodOverride('_method'));
+app.set('view engine', 'ejs');
+app.use(express.static(__dirname + '/public'));
 app.use(require('express-session')({
     secret: 'I read the news today, oh boy.',
     resave: false,
@@ -34,7 +35,7 @@ app.use(passport.session());
 app.use(cookieParser());
 
 //connect to db
-const promise = mongoose.connect("mongodb://localhost/sharelyfe_db", {
+const promise = mongoose.connect('mongodb://localhost/sharelyfe_db', {
     useMongoClient: true
 });
 promise.then();
@@ -70,11 +71,12 @@ app.get('/posts/:post_id', function(req, res) {
 });
 
 // use routes
-app.use("/categories",categoryRoutes);
+app.use('/categories',categoryRoutes);
 app.use('/categories/:id/posts', postRoutes);
+app.use('/categories/:id/posts/:post_id/bookings', bookingRoutes);
 app.use(authRoutes);
 
 //set up server
 app.listen(process.env.PORT, process.env.IP, function() {
-    console.log("The server is listening");
+    console.log('The server is listening');
 });
