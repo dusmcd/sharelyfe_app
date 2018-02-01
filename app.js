@@ -60,7 +60,6 @@ app.get('/posts/:post_id', function(req, res) {
         } else {
             categories.forEach(function(category) {
                 category.posts.forEach(function(post) {
-                    console.log(post);
                     if (String(post) === String(req.params.post_id)) {
                         res.redirect('/categories/' + category._id + '/posts/' + req.params.post_id);
                     }

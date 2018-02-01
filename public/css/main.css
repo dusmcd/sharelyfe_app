@@ -62,6 +62,10 @@ html, body {
     padding: 5px;
 }
 
+.img-height {
+    max-height: 500px;
+}
+
 /*media queries */
 
 @media screen and (max-width: 500px) {

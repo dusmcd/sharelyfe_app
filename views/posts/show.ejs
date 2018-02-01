@@ -4,18 +4,23 @@
     <h1><%= post.title %></h1>
     <section class="row">
         <div class="col-md-12">
-            <img src="/image/<%= post.image[0] %>" class="img-fluid">
+            <img src="/image/<%= post.image[0] %>" class="img-fluid img-height">
         </div>
     </section>
     
     <div class="row">
-        <div class="col-md-6"><%= post.description %></div>
-        <div class="col-md-3"><%= post.price %></div>
-        <div class="col-md-3"><a href='/categories/<%= category_id %>/posts/<%= post._id %>/bookings/new'
-                               class='btn btn-primary'>
-                               Make Reservation</a>
-        </div>
+        <div class="col-md-3"><h4>Description:</h4></div>
+        <div class="col-md-9"><%= post.description %></div>
     </div>
+    <div class="row">
+        <div class="col-md-3"><h4>Price:</h4></div>
+        <div class="col-md-9"><%= post.price %></div>
+    </div>
+        
+    <a href='/categories/<%= category_id %>/posts/<%= post._id %>/bookings/new'
+                               class='btn btn-primary'>
+        Make Reservation
+    </a>
     <!--only the author can see edit and delete buttons-->
     <% if (currentUser !== undefined && String(currentUser._id) === String(post.author.id)) { %>
         <a href='/categories/<%= category_id %>/posts/<%= post._id %>/edit' class='btn btn-sm btn-info buttons'>Edit Post</a>
