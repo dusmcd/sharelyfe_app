@@ -1,2 +1,5 @@
+        <% if (currentUser) { %>
+            <a href="/users/<%= currentUser._id %>" class="btn btn-primary">My Profile</a>
+        <% } %>
     </body>
 </html>

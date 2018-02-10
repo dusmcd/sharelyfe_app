@@ -14,7 +14,8 @@ const express = require('express'),
 const categoryRoutes = require('./routes/categories'),
     authRoutes     = require('./routes/index'),
     postRoutes     = require('./routes/posts'),
-    bookingRoutes  = require('./routes/bookings');
+    bookingRoutes  = require('./routes/bookings'),
+    userRoutes     = require('./routes/users');
     
 //APP CONFIG
 
@@ -74,6 +75,7 @@ app.use('/categories',categoryRoutes);
 app.use('/categories/:id/posts', postRoutes);
 app.use('/categories/:id/posts/:post_id/bookings', bookingRoutes);
 app.use(authRoutes);
+app.use(userRoutes);
 
 //set up server
 app.listen(process.env.PORT, process.env.IP, function() {
