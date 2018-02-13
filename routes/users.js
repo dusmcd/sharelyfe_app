@@ -6,45 +6,41 @@ const express = require('express'),
     
 router.get('/users/:user_id', bookingsCreated,bookingsInPosts,
             function(req, res) {
-    // let userBookings = [];
-    let bookedByUser = req.bookings;
-    let bookedForUser = req.postBookings;
-    console.log('Booked by user at route: ' + bookedByUser);
-    console.log('Booked for user at route: ' + bookedForUser);
+    const createdByUser = req.viewData;
     
-    res.redirect('/');
-
-    
-    // User.findById(req.params.user_id, function(err, user) {
-    //     if (err) {
-    //         console.log(err);
-    //     } else {
-    //         Booking.find({}, function(err, bookings) {
-    //             if (err) {
-    //                 console.log(err);
-    //             } else {
-    //                 bookings.forEach(function(booking) {
-    //                      if(String(booking.author.id) === String(req.params.user_id)) {
-    //                         userBookings.push(booking);
-    //                      }
-    //                 });
-    //                 res.render('users/index', {user: user, userBookings: userBookings});
-    //             }
-                
-    //         });         
-    //     }
-    // });
+    res.render('users/index', {createdByUser: createdByUser});
 });
 
 // to find the bookings associated with a given user (helper function)
 function bookingsCreated(req, res, next) {
+    // querying for all bookings created by curret user
     Booking.find({'author.id': String(req.user._id)}, function(err, foundBookings) {
+        let relevantPosts = [];
         if (err) {
             console.log(err);
-        } 
-            // console.log('Bookings created by user: ' + foundBookings);
-            req.bookings = foundBookings;
-            return next();
+        }
+        // querying for posts associated with bookings. Needed for data to be diaplyed in user profile
+        // console.log(foundBookings);
+        foundBookings.forEach(function(foundBooking) {
+            Post.find({}, function(err, posts) {
+                if (err) {
+                    console.log(err);
+                } else {
+                    posts.forEach(function(post) {
+                        post.bookings.forEach(function(postBooking) {
+                            if (String(postBooking._id) === String(foundBooking._id)) {
+                                relevantPosts.push(post);
+                                console.log('Posts array: ' + relevantPosts);
+                            }
+                        });
+                    });
+                }
+            });
+        });
+        
+        req.viewData = {posts: relevantPosts, bookings: foundBookings};
+        // console.log('Posts with user bookings: ' + relevantPosts);
+        return next();
     });
 }
 
@@ -60,13 +56,13 @@ function bookingsInPosts(req, res, next) {
             foundPosts.forEach(function(post) {
                 if (post.bookings) {
                     post.bookings.forEach(function(booking) {
-                        console.log('Booking: ' + booking);
+                        // console.log('Booking: ' + booking);
                         allBookings.push(booking);
                         // console.log('allBookings variable: ' + allBookings);
                     });       
                 }
             });
-            console.log('allBookings variable: ' + allBookings);
+            // console.log('allBookings variable: ' + allBookings);
             req.postBookings = allBookings;
             return next();
         }

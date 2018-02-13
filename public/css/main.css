@@ -10,6 +10,11 @@ html, body {
 .navbar-light .navbar-nav .nav-link {
     color: black;
 }
+
+#blend {
+    border: none;
+    background: inherit;
+}
 /*nav bar styles*/
 
 /*landing page styles*/
