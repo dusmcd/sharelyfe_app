@@ -4,34 +4,33 @@
         <h1>Profile for <%= currentUser.firstName %></h1>
         <h3>Reservations made by you</h3>
         <table class="table">
-            <thead class="thead-dark">
+            <thead>
                 <tr>
                     <th scope="col">Item Reserved</th>
                     <th scope="col">Price</th>
-                    <th scope="col">Date Reserved</th>
+                    <th scope="col">Date</th>
                     <th scope="col">Payment Method</th>
                 </tr>
             </thead>
+            
             <tbody>
-          <% createdByUser.bookings.forEach(function(booking) { %>
-              <% createdByUser.posts.forEach(function(post) { %>
-                  <% post.bookings.forEach(function(postBooking) { %>
-                      <% if (String(postBooking._id) === String(booking._id)) { %>
-                          <tr>
-                              <% let bookDate = booking.date.getMonth() + 1 + '/' +
-                                  booking.date.getDate() + '/' + 
-                                  booking.date.getFullYear(); %>
-                              <td><%= post.title %></td>
-                              <td><%= post.price %></td>
-                              <td><%= bookDate %></td>
-                              <td><%= booking.payment %></td>
-                          </tr>
-                      <% } %>
-                  <% }); %>
-              <% }); %>
-          <% }); %>
-             </tbody>
-          </table>
+               <% for (let i in createdByUser) { %> 
+                    <tr>
+                        <% let bookDate = createdByUser[i].booking.date; %>
+                        <% let formattedBookDate = bookDate.getMonth() + 1 + '/'
+                           + bookDate.getDate() + '/' + bookDate.getFullYear(); %>
+                        
+                        <td><%= createdByUser[i].post.title %></td>
+                        <td><%= createdByUser[i].post.price %></td>
+                        <td><%= formattedBookDate %></td>
+                        <td><%= createdByUser[i].booking.payment %></td>
+                    </tr>
+                
+                <% } %>
+            </tbody>
+        </table>
+        
+        
         <h3>Reservations for your own posts</h3>
     </div>
     

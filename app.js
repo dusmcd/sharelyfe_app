@@ -5,8 +5,9 @@ const express = require('express'),
     methodOverride = require('method-override'),
     mongoose    = require('mongoose'),
     Category = require('./models/category'),
-    // Post = require('./models/post'),
+    Post = require('./models/post'),
     User = require('./models/user'),
+    Booking = require('./models/booking'),
     passport = require('passport'),
     LocalStrategy = require('passport-local');
     
@@ -52,6 +53,15 @@ app.use(function(req, res, next) {
     res.locals.currentUser = req.user;
     next();
 });
+
+// app.get('/test', function(req, res) {
+//     Booking.find({'author.id': req.user._id}, function(err, foundBookings) {
+//         if (!err) {
+//             req.bookings = foundBookings;
+//             return next();
+//         }
+//     });
+// });
 
 app.get('/posts/:post_id', function(req, res) {
     // res.send('Welcome to posts/:post_id route.');
