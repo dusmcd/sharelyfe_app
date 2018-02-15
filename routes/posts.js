@@ -112,6 +112,15 @@ router.put("/:post_id", function(req, res) {
 //destroy route
 
 router.delete('/:post_id', function(req, res) {
+    Category.findById(req.params.id, function(err, category) {
+        if (err) {
+            console.log(err);
+        } else {
+            category.posts.pull(req.params.post_id);
+            category.save();
+        }
+    });
+    
     Post.findByIdAndRemove(req.params.post_id, function(err) {
         if (err) {
             console.log(err);

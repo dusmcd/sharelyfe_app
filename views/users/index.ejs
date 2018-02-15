@@ -10,23 +10,34 @@
                     <th scope="col">Price</th>
                     <th scope="col">Date</th>
                     <th scope="col">Payment Method</th>
+                    <th scope="col">Actions</th>
                 </tr>
             </thead>
             
             <tbody>
-               <% for (let i in createdByUser) { %> 
+               <% createdByUser.forEach(function(postAndBooking) { %> 
                     <tr>
-                        <% let bookDate = createdByUser[i].booking.date; %>
+                        <% let bookDate = postAndBooking.booking.date; %>
                         <% let formattedBookDate = bookDate.getMonth() + 1 + '/'
                            + bookDate.getDate() + '/' + bookDate.getFullYear(); %>
                         
-                        <td><%= createdByUser[i].post.title %></td>
-                        <td><%= createdByUser[i].post.price %></td>
+                        <td><%= postAndBooking.post.title %></td>
+                        <td><%= postAndBooking.post.price %></td>
                         <td><%= formattedBookDate %></td>
-                        <td><%= createdByUser[i].booking.payment %></td>
+                        <td><%= postAndBooking.booking.payment %></td>
+                        <td>
+                            <form 
+                                action="/categories/0000/posts/<%= postAndBooking.post._id %>/bookings/<%= postAndBooking.booking._id %>?_method=DELETE" 
+                                method="POST"
+                                class="buttons">
+                                <button class="btn btn-sm btn-danger">Delete</button>
+                            </form>
+                            <a href="/categories/0000/posts/<%= postAndBooking.post._id %>/bookings/<%= postAndBooking.booking._id %>/edit"
+                               class="btn btn-sm btn-info buttons">Edit</a>
+                        </td>
                     </tr>
                 
-                <% } %>
+                <% }); %>
             </tbody>
         </table>
         

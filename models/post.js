@@ -6,12 +6,7 @@ var postSchema = mongoose.Schema({
     title: String,
     description: String,
     price: String,
-    bookings: [{
-        id: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Booking'
-        }
-    }],
+    bookings: [bookingSchema],
     author:{
         id: {
             type: mongoose.Schema.Types.ObjectId,

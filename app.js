@@ -54,14 +54,6 @@ app.use(function(req, res, next) {
     next();
 });
 
-// app.get('/test', function(req, res) {
-//     Booking.find({'author.id': req.user._id}, function(err, foundBookings) {
-//         if (!err) {
-//             req.bookings = foundBookings;
-//             return next();
-//         }
-//     });
-// });
 
 app.get('/posts/:post_id', function(req, res) {
     // res.send('Welcome to posts/:post_id route.');
