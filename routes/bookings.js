@@ -48,19 +48,63 @@ router.delete('/:booking_id', function(req, res) {
             console.log(err);
             res.redirect('/users' + req.user._id);
         } else {
-            console.log('Reservation deleted');
+            // console.log('Reservation deleted');
             res.redirect('/users/' + req.user._id);
         }
     });
 });
 
-// update route
+// update routes
 
-router.get('/:booking_id/edit', getUserBookings, function(req, res) {
-    res.send('This is the "edit" route for bookings');
+router.get('/:booking_id/edit', function(req, res) {
+    // res.send('This is the "edit" route for bookings');
     
-    // const createdByUser = req.result;
-    // res.render('bookings/edit', {createdByUser: createdByUser});
+    Post.findById(req.params.post_id, handlePost);
+    
+    function handlePost(err, post) {
+        if (err) {
+            console.log(err);
+        } else {
+            handleBooking(post);
+        }
+    }
+    
+    function handleBooking(post) {
+        Booking.findById(req.params.booking_id, function(err, booking) {
+            if (err) {
+                console.log(err);
+            } else {
+                res.render('bookings/edit', {post: post, booking: booking});
+            }
+        });
+    }
+});
+
+router.put('/:booking_id', function(req, res) {
+    // res.send('This is the "PUT" route for updating bookings');
+    
+    // updating the booking schema sub doc in the post schema
+    Post.findById(req.params.post_id, function(err, post) {
+        if (!err) {
+            post.bookings.forEach(function(booking, i, bookingArray) {
+                if (String(booking._id) === String(req.params.booking_id)) {
+                    bookingArray[i].payment = req.body.payment;
+                    bookingArray[i].date = req.body.date;
+                }
+            });
+            post.save();
+        }
+    });
+    
+    // updating the booking schema
+    const bookingUpdates = {date: req.body.date, payment: req.body.payment}; 
+    Booking.findByIdAndUpdate(req.params.booking_id, bookingUpdates, function(err, booking) {
+        if (err) {
+            console.log(err);
+        } else {
+            res.redirect('/users/' + req.user._id);
+        }
+    });
 });
 
 
@@ -73,26 +117,22 @@ function isLoggedIn(req, res, next) {
         res.redirect('/login');
     }
 }
-// probably needs to be refactored using promises
-// finds the posts associated with bookings created by current user
 
-function getUserBookings(req, res, next) {
-    Post.find({}, function(err, posts) {
-        req.result = [];
-        if (!err) {
-            posts.forEach(function scanPosts(post) {
-                if (post.bookings) {
-                    post.bookings.forEach(function scanBookings(booking) {
-                        if (String(booking.author.id) === String(req.user._id)) {
-                            req.result.push({post: post, booking: booking});
-                        }
-                    });
-                }
-            });
+function isOriginalUser(req, res, next) {
+    Post.findById(req.params.post_id, function(err, post) {
+        if (err) {
+            console.log(err);
+        } else {
+            if (String(post.author.id) === String(req.user._id)) {
+                return next();
+            }
+            res.redirect('/');
         }
-        return next();
     });
-    
 }
+
+
+
+
 
 module.exports = router;

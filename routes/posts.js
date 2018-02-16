@@ -141,4 +141,17 @@ function isLoggedIn(req, res, next) {
     }
 }
 
+function isOriginalUser(req, res, next) {
+    Post.findById(req.params.post_id, function(err, post) {
+        if (err) {
+            console.log(err);
+        } else {
+            if (String(post.author.id) === String(req.user._id)) {
+                return next();
+            }
+            res.redirect('/');
+        }
+    });
+}
+
 module.exports = router;
