@@ -5,11 +5,35 @@ const express = require('express'),
     User    = require('../models/user');
     
     
-router.get('/users/:user_id', getUserBookings, function(req, res) {
+router.get('/users/:username', getUserBookings, getPostsWithBookings, function(req, res) {
     const createdByUser = req.result;
-    // console.log(createdByUser);
-    // res.redirect('/');
-    res.render('users/index', {createdByUser: createdByUser});
+    let createdForUser = req.userPosts;
+    
+    User.find({}, handleUsers);
+    
+    function handleUsers(err, users) {
+        if (err) {
+            console.log(err);
+        } else {
+            users.forEach(scanUsers);
+        }
+        res.render('users/index', {createdByUser: createdByUser, createdForUser: createdForUser});
+    }
+    
+    function scanUsers(user) {
+        handleObjects(user);
+    }
+    
+    function handleObjects(user) {
+        createdForUser.forEach(function(postAndBooking, i, array) {
+            if (String(postAndBooking.booking.author.id) === String(user._id)) {
+                array[i].user = user;
+            }
+        });
+    }
+    
+
+    
 });
 
 // *************** middleware ************************//
@@ -18,21 +42,62 @@ router.get('/users/:user_id', getUserBookings, function(req, res) {
 // finds the posts associated with bookings created by current user
 
 function getUserBookings(req, res, next) {
-    Post.find({}, function(err, posts) {
+    Post.find({}, getPosts);
+    
+    function getPosts(err, posts) {
         req.result = [];
-        if (!err) {
-            posts.forEach(function scanPosts(post) {
-                if (post.bookings) {
-                    post.bookings.forEach(function scanBookings(booking) {
-                        if (String(booking.author.id) === String(req.user._id)) {
-                            req.result.push({post: post, booking: booking});
-                        }
-                    });
-                }
-            });
+        if (err) {
+            console.log(err);
+        } else {
+            posts.forEach(scanPosts);
         }
         return next();
-    });
+    }
+    
+    function scanPosts(post) {
+        if (post.bookings) {
+            scanBookings(post);
+        }
+    }
+    
+    function scanBookings(post) {
+        post.bookings.forEach(function(booking) {
+            if (String(booking.author.id) === String(req.user._id)) {
+                req.result.push({post: post, booking: booking});
+            }
+        });
+    }
+    
+}
+
+// compile the posts that were created by the current user, which have bookings
+
+function getPostsWithBookings(req, res, next) {
+    Post.find({'author.id': req.user._id}, getPosts);
+    
+    function getPosts(err, posts) {
+        req.userPosts = [];
+        if (err) {
+            console.log(err);
+        } else {
+            posts.forEach(scanPosts);
+        }
+        return next();
+    }
+    
+    function scanPosts(post) {
+        if (post.bookings) {
+            scanBookings(post);
+        }
+    }
+    
+    function scanBookings(post) {
+        post.bookings.forEach(function(booking) {
+            req.userPosts.push({post: post, booking: booking});
+        });
+    }
+    
+    
     
 }
 

@@ -41,8 +41,37 @@
             </tbody>
         </table>
         
-        
         <h3>Reservations for your own posts</h3>
+                <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Item Reserved</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Payment Method</th>
+                    <th scope="col">Username</th>
+                    <th scope="col">User e-mail</th>
+                </tr>
+            </thead>
+            
+            <tbody>
+               <% createdForUser.forEach(function(postAndBooking) { %> 
+                    <tr>
+                        <% let bookDate = postAndBooking.booking.date; %>
+                        <% let formattedBookDate = bookDate.getMonth() + 1 + '/'
+                            + bookDate.getDate() + '/' + bookDate.getFullYear(); %>
+                        
+                        <td><%= postAndBooking.post.title %></td>
+                        <td><%= postAndBooking.post.price %></td>
+                        <td><%= formattedBookDate %></td>
+                        <td><%= postAndBooking.booking.payment %></td>
+                        <td><%= postAndBooking.user.username %></td>
+                        <td><%= postAndBooking.user.email %></td>
+                    </tr>
+                
+                <% }); %>
+            </tbody>
+        </table>
     </div>
     
 <% include ../partials/footer %>

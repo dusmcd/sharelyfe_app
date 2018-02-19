@@ -25,7 +25,7 @@ router.post('/', isLoggedIn, function(req, res) {
             post.bookings.push(newReservation);
             post.save();
             newReservation.save();
-            res.send('Reservation saved!');
+            res.redirect('/users/' + req.user.username);
         }
     });
     
@@ -46,10 +46,10 @@ router.delete('/:booking_id', function(req, res) {
     Booking.findByIdAndRemove(req.params.booking_id, function(err) {
         if (err) {
             console.log(err);
-            res.redirect('/users' + req.user._id);
+            res.redirect('/users' + req.user.username);
         } else {
             // console.log('Reservation deleted');
-            res.redirect('/users/' + req.user._id);
+            res.redirect('/users/' + req.user.username);
         }
     });
 });
