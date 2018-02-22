@@ -1,10 +1,11 @@
-var express = require("express"),
+const express = require("express"),
     router  = express.Router({mergeParms: true}),
-    Category = require("../models/category");
+    Category = require("../models/category"),
+    middlewareObj = require('../middleware/index');
     
 
 //index route for categories
-router.get('/', function(req, res) {
+router.get('/', middlewareObj.isLoggedIn, function(req, res) {
     Category.find({}, function(err, categories) {
         if (err) {
             console.log(err);
@@ -17,11 +18,11 @@ router.get('/', function(req, res) {
 
 //create routes
 
-router.get("/new", function(req, res) {
+router.get("/new", middlewareObj.isLoggedIn, function(req, res) {
     res.render("categories/new");
 });
 
-router.post("/", function(req, res) {
+router.post("/", middlewareObj.isLoggedIn, function(req, res) {
     Category.create({name: req.body.name}, function(err, newCategory) {
         if(err) {
             console.log(err);
@@ -39,7 +40,7 @@ router.get("/:id", function(req, res) {
             res.redirect('/');
         } else {
             res.render('categories/show', {category: category});
-            console.log(category.posts[0]);
+            // console.log(category.posts[0]);
         }
     });
 });

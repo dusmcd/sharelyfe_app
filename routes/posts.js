@@ -1,8 +1,9 @@
-var express = require("express"),
+const express = require("express"),
     router  = express.Router({mergeParams: true}),
     multer = require('multer'),
     Category = require("../models/category"),
-    Post    = require("../models/post");
+    Post    = require("../models/post"),
+    middlewareObj = require('../middleware/index');
     
 
 //congifure multer for image uploading
@@ -13,6 +14,8 @@ const storage = multer.diskStorage({
     },
     filename: function(req, file, cb) {
         let mimeType = file.mimetype;
+        // parsing the mimetype field of storage object in order to get a valid
+        // file name for images
         const fileExtension = mimeType.slice(mimeType.search('/') + 1, mimeType.length);
         cb(null, file.fieldname + '-' + Date.now() + '.' + fileExtension);
     }
@@ -22,7 +25,7 @@ const upload = multer({storage: storage});
 
 
 //create routes    
-router.get("/new", isLoggedIn, function(req, res) {
+router.get("/new", middlewareObj.isLoggedIn, function(req, res) {
     Category.findById(req.params.id, function(err, category) {
         if (err) {
             console.log(err);
@@ -33,7 +36,7 @@ router.get("/new", isLoggedIn, function(req, res) {
     });
 });
 
-router.post("/", isLoggedIn, function(req, res) {
+router.post("/", middlewareObj.isLoggedIn, function(req, res) {
     Category.findById(req.params.id, function(err, category) {
         if(err) {
             console.log(err);
@@ -55,16 +58,19 @@ router.post("/", isLoggedIn, function(req, res) {
 });
 
 //routes to upload image to newly created post
-router.get('/:post_id/upload', function(req, res) {
-    res.render('posts/upload', {category_id: req.params.id, post_id: req.params.post_id});
+router.get('/:post_id/upload', middlewareObj.isOriginalUser, function(req, res) {
+                
+    res.render('posts/upload', {category_id: req.params.id, 
+                                post_id: req.params.post_id});
 });
 
-router.post('/:post_id/upload', upload.single('upl'), function(req, res) {
+router.post('/:post_id/upload', middlewareObj.isOriginalUser, upload.single('upl'), function(req, res) {
+    
     Post.findById(req.params.post_id, function(err, post) {
         if (err) {
             console.log(err);
         } else {
-            post.image.push(req.file.filename);
+            post.image.push(req.file ? req.file.filename : 'default.jpeg');
             post.save();
             // res.redirect('/');
             res.redirect('/categories/' + req.params.id + '/posts/' + post._id);
@@ -85,7 +91,7 @@ router.get("/:post_id", function(req, res) {
 });
 
 //update routes 
-router.get("/:post_id/edit", function(req, res) {
+router.get("/:post_id/edit", middlewareObj.isOriginalUser, function(req, res) {
     Post.findById(req.params.post_id, function(err, post) {
         if (err) {
             console.log(err);
@@ -98,7 +104,7 @@ router.get("/:post_id/edit", function(req, res) {
     
 });
 
-router.put("/:post_id", function(req, res) {
+router.put("/:post_id", middlewareObj.isOriginalUser, function(req, res) {
     Post.findByIdAndUpdate(req.params.post_id, req.body.post, function(err, updatedPost) {
         if (err) {
             console.log(err);
@@ -111,7 +117,7 @@ router.put("/:post_id", function(req, res) {
 
 //destroy route
 
-router.delete('/:post_id', function(req, res) {
+router.delete('/:post_id', middlewareObj.isOriginalUser, function(req, res) {
     Category.findById(req.params.id, function(err, category) {
         if (err) {
             console.log(err);
@@ -131,27 +137,6 @@ router.delete('/:post_id', function(req, res) {
     });
 });
 
-//middleware
-function isLoggedIn(req, res, next) {
-    if (req.isAuthenticated()) {
-        return next();
-    }
-    else {
-        res.redirect('/login');
-    }
-}
 
-function isOriginalUser(req, res, next) {
-    Post.findById(req.params.post_id, function(err, post) {
-        if (err) {
-            console.log(err);
-        } else {
-            if (String(post.author.id) === String(req.user._id)) {
-                return next();
-            }
-            res.redirect('/');
-        }
-    });
-}
 
 module.exports = router;

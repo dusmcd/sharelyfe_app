@@ -71,6 +71,16 @@ html, body {
     max-height: 500px;
 }
 
+/*show view: posts*/
+
+/*edit view: bookings*/
+
+.date-required {
+    color: red;
+}
+
+/*edit view: bookings*/
+
 /*media queries */
 
 @media screen and (max-width: 500px) {

@@ -1,9 +1,10 @@
-var express = require('express'),
+const express = require('express'),
     router  = express.Router({mergeParams: true}),
     Post    = require('../models/post'),
-    Booking = require('../models/booking');
+    Booking = require('../models/booking'),
+    middlewareObj = require('../middleware/index');
     
-router.get('/new', isLoggedIn, function(req, res) {
+router.get('/new', middlewareObj.isLoggedIn, function(req, res) {
     Post.findById(req.params.post_id, function(err, post) {
         if (err) {
             console.log(err);
@@ -13,7 +14,7 @@ router.get('/new', isLoggedIn, function(req, res) {
     });
 });
 
-router.post('/', isLoggedIn, function(req, res) {
+router.post('/', middlewareObj.isLoggedIn, function(req, res) {
     const newReservation = new Booking(req.body.booking);
     
     Post.findById(req.params.post_id, function(err, post) {
@@ -33,7 +34,7 @@ router.post('/', isLoggedIn, function(req, res) {
 
 // destroy route
 
-router.delete('/:booking_id', function(req, res) {
+router.delete('/:booking_id', middlewareObj.isBookingCreator, function(req, res) {
     Post.findById(req.params.post_id, function(err, post) {
         if (err) {
             console.log(err);
@@ -56,7 +57,7 @@ router.delete('/:booking_id', function(req, res) {
 
 // update routes
 
-router.get('/:booking_id/edit', function(req, res) {
+router.get('/:booking_id/edit', middlewareObj.isBookingCreator, function(req, res) {
     // res.send('This is the "edit" route for bookings');
     
     Post.findById(req.params.post_id, handlePost);
@@ -80,7 +81,7 @@ router.get('/:booking_id/edit', function(req, res) {
     }
 });
 
-router.put('/:booking_id', function(req, res) {
+router.put('/:booking_id', middlewareObj.isBookingCreator, function(req, res) {
     // res.send('This is the "PUT" route for updating bookings');
     
     // updating the booking schema sub doc in the post schema
@@ -107,29 +108,6 @@ router.put('/:booking_id', function(req, res) {
     });
 });
 
-
-//middleware
-function isLoggedIn(req, res, next) {
-    if (req.isAuthenticated()) {
-        return next();
-    }
-    else {
-        res.redirect('/login');
-    }
-}
-
-function isOriginalUser(req, res, next) {
-    Post.findById(req.params.post_id, function(err, post) {
-        if (err) {
-            console.log(err);
-        } else {
-            if (String(post.author.id) === String(req.user._id)) {
-                return next();
-            }
-            res.redirect('/');
-        }
-    });
-}
 
 
 
