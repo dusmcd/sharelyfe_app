@@ -44,7 +44,7 @@ router.post('/register', function(req, res) {
             res.redirect('/');
         }
         passport.authenticate('local')(req, res, function() {
-            res.send('You have been added to the system.');
+            res.redirect('/');
         });
     });
 });

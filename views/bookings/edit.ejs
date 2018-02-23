@@ -4,7 +4,7 @@
     <h1>Edit Reservation for <%= post.title %></h1>
     <form action="/categories/0000/posts/<%= post._id %>/bookings/<%= booking._id %>?_method=PUT" method="post">
         <div class='form-group'>
-            <p class="date-required"><em>New date is required</em></p>
+            <p class="date-required"><em>Date field is required</em></p>
             <label for="date">Date</label>
             <!--required attribute and date attribute likely not valid for all browsers-->
             <input type="date" id="date" name="date" value="<%= booking.date %>" class='form-control' required>

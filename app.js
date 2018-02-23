@@ -36,10 +36,14 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(cookieParser());
 
-//connect to db
-const promise = mongoose.connect('mongodb://localhost/sharelyfe_db', {
+const promise = mongoose.connect('mongodb://dusmcd:nitsud181@ds247178.mlab.com:47178/sharelyfe_db', {
     useMongoClient: true
 });
+
+//connect to db
+// const promise = mongoose.connect('mongodb://localhost/sharelyfe_db', {
+//    useMongoClient: true
+// });
 promise.then();
 
 // passport config
@@ -53,6 +57,7 @@ app.use(function(req, res, next) {
     res.locals.currentUser = req.user;
     next();
 });
+
 
 
 app.get('/posts/:post_id', function(req, res) {

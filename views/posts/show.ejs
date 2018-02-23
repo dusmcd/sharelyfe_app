@@ -16,11 +16,12 @@
         <div class="col-md-3"><h4>Price:</h4></div>
         <div class="col-md-9"><%= post.price %></div>
     </div>
-        
-    <a href='/categories/<%= category_id %>/posts/<%= post._id %>/bookings/new'
-                               class='btn btn-primary'>
-        Make Reservation
-    </a>
+    <% if ((currentUser && String(post.author.id) !== String(currentUser._id)) || !currentUser) { %>   
+        <a href='/categories/<%= category_id %>/posts/<%= post._id %>/bookings/new'
+                                   class='btn btn-primary'>
+            Make Reservation
+        </a>
+    <% } %>
     <!--only the author can see edit and delete buttons-->
     <% if (currentUser !== undefined && String(currentUser._id) === String(post.author.id)) { %>
         <a href='/categories/<%= category_id %>/posts/<%= post._id %>/edit' class='btn btn-sm btn-info buttons'>Edit Post</a>

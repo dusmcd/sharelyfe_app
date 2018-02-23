@@ -15,6 +15,10 @@ html, body {
     border: none;
     background: inherit;
 }
+
+.category-btn {
+    margin-left: 10px;
+}
 /*nav bar styles*/
 
 /*landing page styles*/
