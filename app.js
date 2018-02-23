@@ -74,12 +74,12 @@ app.get('/posts/:post_id', function(req, res) {
     
     function scanCategories(category) {
         category.posts.forEach(function(post) {
-            scanPosts(category);
+            scanPosts(category, post);
         });
     }
     
-    function scanPosts(category) {
-        if (String(req.params.post_id) === String(req.params._id)) {
+    function scanPosts(category, post) {
+        if (String(req.params.post_id) === String(post)) {
             res.redirect('/categories/' + category._id + '/posts/' + req.params.post_id);   
         }
     }
