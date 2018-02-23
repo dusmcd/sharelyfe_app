@@ -62,19 +62,28 @@ app.use(function(req, res, next) {
 
 app.get('/posts/:post_id', function(req, res) {
     // res.send('Welcome to posts/:post_id route.');
-    Category.find({}, function(err, categories) {
+    Category.find({}, getCategories);
+    
+    function getCategories(err, categories) {
         if (err) {
             console.log(err);
         } else {
-            categories.forEach(function(category) {
-                category.posts.forEach(function(post) {
-                    if (String(post) === String(req.params.post_id)) {
-                        res.redirect('/categories/' + category._id + '/posts/' + req.params.post_id);
-                    }
-                });
-            });
+            categories.forEach(scanCategories);
         }
-    });
+    }
+    
+    function scanCategories(category) {
+        category.posts.forEach(function(post) {
+            scanPosts(category);
+        });
+    }
+    
+    function scanPosts(category) {
+        if (String(req.params.post_id) === String(req.params._id)) {
+            res.redirect('/categories/' + category._id + '/posts/' + req.params.post_id);   
+        }
+    }
+    
 });
 
 // use routes
