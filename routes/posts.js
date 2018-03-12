@@ -72,14 +72,22 @@ router.post('/:post_id/upload', middlewareObj.isOriginalUser, upload.single('upl
         if (err) {
             console.log(err);
         } else {
-            var fileName = req.file ? req.file.filename : 'https://res.cloudinary.com/dz7ejmv18/image/upload/v1520881579/g7ocjbjjty66tqk13w0t.jpg';
-            cloudinary.uploader.upload('./public/image/' + fileName, function(result) {
-                console.log(result.secure_url);
+            // logic to determine whether to save the 'default' image
+            if (req.file) {
+                cloudinary.uploader.upload('./public/image/' + req.file.filename, function(result) {
+                // console.log(result.secure_url);
                 post.image.push(result.secure_url);
                 post.save();
+                res.redirect('/categories/' + req.params.id + '/posts/' + post._id);
             });
-            // res.redirect('/');
-            res.redirect('/categories/' + req.params.id + '/posts/' + post._id);
+            }
+            else {
+                var fileName = 'https://res.cloudinary.com/dz7ejmv18/image/upload/v1520881579/g7ocjbjjty66tqk13w0t.jpg';
+                // console.log(result.secure_url);
+                post.image.push(fileName);
+                post.save();
+                res.redirect('/categories/' + req.params.id + '/posts/' + post._id);
+            }
         }
     });
 });
