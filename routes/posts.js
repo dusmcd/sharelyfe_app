@@ -72,12 +72,12 @@ router.post('/:post_id/upload', middlewareObj.isOriginalUser, upload.single('upl
         if (err) {
             console.log(err);
         } else {
-            // var fileName = req.file ? req.file.filename : 'default.jpeg';
-            // cloudinary.uploader.upload('./public/image/' + fileName, function(result) {
-            //     console.log(result.secure_url);
-            //     post.image.push(result.secure_url);
-            //     post.save();
-            // });
+            var fileName = req.file ? req.file.filename : 'default.jpeg';
+            cloudinary.uploader.upload('./public/image/' + fileName, function(result) {
+                console.log(result.secure_url);
+                post.image.push(result.secure_url);
+                post.save();
+            });
             // res.redirect('/');
             res.redirect('/categories/' + req.params.id + '/posts/' + post._id);
         }
