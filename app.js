@@ -9,6 +9,7 @@ const express = require('express'),
     User = require('./models/user'),
     Booking = require('./models/booking'),
     passport = require('passport'),
+    cloudinary = require('cloudinary'),
     LocalStrategy = require('passport-local');
     
 //require routes
@@ -19,6 +20,13 @@ const categoryRoutes = require('./routes/categories'),
     userRoutes     = require('./routes/users');
     
 //APP CONFIG
+
+// configure cloudinary for uploading images to cloud storage
+cloudinary.config({
+    cloud_name: 'dz7ejmv18',
+    api_key: '756354461611933',
+    api_secret: 'MJ4SzYkSFjA4eLlUXwhWUf_59dU'
+});
 
 // parse application/x-www-form-urlencoded 
 app.use(bodyParser.urlencoded({ extended: true }));

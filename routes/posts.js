@@ -6,12 +6,7 @@ const express = require("express"),
     middlewareObj = require('../middleware/index'),
     cloudinary = require('cloudinary');
     
-// configure cloudinary for uploading images to cloud storage
-// cloudinary.config({
-//     cloud_name: 'dz7ejmv18',
-//     api_key: '756354461611933',
-//     api_secret: 'MJ4SzYkSFjA4eLlUXwhWUf_59dU'
-// });
+
 
 //congifure multer for image uploading
 
