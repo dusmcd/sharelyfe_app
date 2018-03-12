@@ -4,14 +4,13 @@
     <h1><%= post.title %></h1>
     <section class="row">
         <div class="col-md-12">
-            <img src="/image/<%= post.image[0] %>" class="img-fluid img-height">
+            <img src="<%= post.image[0] %>" class="img-fluid img-height">
         </div>
     </section>
     
-    <div class="row">
-        <div class="col-md-3"><h4>Description:</h4></div>
-        <div class="col-md-9"><%= post.description %></div>
-    </div>
+    <h4>Description:</h4>
+    <p><%= post.description %></p>
+    
     <div class="row">
         <div class="col-md-3"><h4>Price:</h4></div>
         <div class="col-md-9"><%= post.price %></div>
