@@ -72,7 +72,7 @@ router.post('/:post_id/upload', middlewareObj.isOriginalUser, upload.single('upl
         if (err) {
             console.log(err);
         } else {
-            var fileName = req.file ? req.file.filename : 'default.jpeg';
+            var fileName = req.file ? req.file.filename : 'https://res.cloudinary.com/dz7ejmv18/image/upload/v1520881579/g7ocjbjjty66tqk13w0t.jpg';
             cloudinary.uploader.upload('./public/image/' + fileName, function(result) {
                 console.log(result.secure_url);
                 post.image.push(result.secure_url);
