@@ -63,6 +63,11 @@ html, body {
     margin: 0 1.66%;
 }
 
+.img-custom {
+    width: 280px;
+    height: 175px;
+}
+
 /*landing page styles*/
 
 /*show view: posts*/
@@ -87,11 +92,28 @@ html, body {
 
 /*media queries */
 
-@media screen and (max-width: 500px) {
+/* 2 imgs per line when browser screen bets below 770px */
+@media screen and (max-width: 770px) {
     .one-post {
         width: 45%;
         margin: 0 2.5%;
     }
 }
+
+/* one img per line when smaller than 450px */
+@media screen and (max-width: 450px) {
+    .one-post {
+        width: 90%;
+        margin: 0 5%;
+    }
+}
+/*when browser width gets smaller than 990px, img height is smaller */
+@media screen and (max-width: 990px) {
+    .img-custom {
+        height: 150px;
+    }
+}
+
+
 
 /*media queries */
