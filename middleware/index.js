@@ -8,7 +8,8 @@ middlewareObj = {
     isOriginalUser: isOriginalUser,
     getUserBookings: getUserBookings,
     getPostsWithBookings: getPostsWithBookings,
-    isBookingCreator: isBookingCreator
+    isBookingCreator: isBookingCreator,
+    isOwner: isOwner
 };
 
 
@@ -111,8 +112,14 @@ function getPostsWithBookings(req, res, next) {
         });
     }
     
-    
-    
+}
+
+function isOwner(req, res, next) {
+    if (String(req.user._id) === '5a90e2cff3a1a2001431d08a') {
+        return next();
+    } else {
+        res.redirect('/');
+    }
 }
 
 

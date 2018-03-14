@@ -18,11 +18,11 @@ router.get('/', middlewareObj.isLoggedIn, function(req, res) {
 
 //create routes
 
-router.get("/new", middlewareObj.isLoggedIn, function(req, res) {
+router.get("/new", middlewareObj.isLoggedIn, middlewareObj.isOwner, function(req, res) {
     res.render("categories/new");
 });
 
-router.post("/", middlewareObj.isLoggedIn, function(req, res) {
+router.post("/", middlewareObj.isLoggedIn, middlewareObj.isOwner, function(req, res) {
     Category.create({name: req.body.name}, function(err, newCategory) {
         if(err) {
             console.log(err);

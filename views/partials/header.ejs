@@ -17,6 +17,9 @@
             <div class="collapse navbar-collapse">
               <% if (currentUser) { %>
                 <a href="/users/<%= currentUser.username %>" class="btn btn-primary">My Profile</a>
+              <% } %>
+              
+              <% if (currentUser && String(currentUser._id) === '5a90e2cff3a1a2001431d08a') { %>
                 <a href="/categories/new" class="btn btn-primary category-btn">Add Category</a>
               <% } %>
             </div>
