@@ -49,6 +49,10 @@ router.post('/register', function(req, res) {
     });
 });
 
+router.get('/terms', function(req, res) {
+    res.render('terms');
+});
+
 router.get('/login', function(req, res) {
     res.render('login');
 });

@@ -2,7 +2,7 @@
 
 <div class="container">
     <h1>New Post for <%= category.name %></h1>
-    <form action="/categories/<%= category._id %>/posts" method="post">
+    <form action="/categories/<%= category._id %>/posts" method="post" onsubmit="return validateForm()">
         <div class='form-group'>
             <label for="title">Title</label>
             <input type="text" id="title" name="post[title]" placeholder="Title" class='form-control'>

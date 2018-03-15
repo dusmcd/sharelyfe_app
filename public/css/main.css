@@ -70,6 +70,16 @@ html, body {
 
 /*landing page styles*/
 
+/* terms and conditions page */
+.terms {
+    text-align: center;
+}
+
+
+
+
+/*terms and conditions page*/
+
 /*show view: posts*/
 .buttons {
     display: inline-block;
