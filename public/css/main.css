@@ -70,13 +70,18 @@ html, body {
 
 /*landing page styles*/
 
+/*register page styles*/
+.form-errors {
+    padding: 10px;
+    color: red;
+}
+
+/*register page styles*/
+
 /* terms and conditions page */
 .terms {
     text-align: center;
 }
-
-
-
 
 /*terms and conditions page*/
 
