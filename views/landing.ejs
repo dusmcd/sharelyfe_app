@@ -12,8 +12,11 @@
     <div class="posts">
         <% posts.forEach(function(post) { %>
             <div class="one-post">
-                <img src="<%= post.image %>" class="img-thumbnail img-custom">
-                <a href='/posts/<%= post._id %>'><h5><%= post.title %></h5></a>
+                <a href='/posts/<%= post._id %>'>
+                    <img src="<%= post.image %>" class="img-thumbnail img-custom">
+                </a>
+                <h5><%= post.title %></h5>
+                <h7>$<%= post.price %> per day</h7>
             </div>
         <% }) %>
     </div>

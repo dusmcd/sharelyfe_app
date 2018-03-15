@@ -60,7 +60,7 @@ html, body {
 
 .one-post {
     width: 30%;
-    margin: 0 1.66%;
+    margin: 3% 1.66%;
 }
 
 .img-custom {
@@ -96,7 +96,7 @@ html, body {
 @media screen and (max-width: 770px) {
     .one-post {
         width: 45%;
-        margin: 0 2.5%;
+        margin: 6.5% 2.5%;
     }
 }
 
@@ -104,7 +104,7 @@ html, body {
 @media screen and (max-width: 450px) {
     .one-post {
         width: 90%;
-        margin: 0 5%;
+        margin: 6.5% 5%;
     }
 }
 /*when browser width gets smaller than 990px, img height is smaller */
