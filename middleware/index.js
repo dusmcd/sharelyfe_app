@@ -115,7 +115,7 @@ function getPostsWithBookings(req, res, next) {
 }
 
 function isOwner(req, res, next) {
-    if (String(req.user._id) === '5a90e2cff3a1a2001431d08a') {
+    if (String(req.user._id) === process.env.OWNERID) {
         return next();
     } else {
         res.redirect('/');
