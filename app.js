@@ -23,9 +23,9 @@ const categoryRoutes = require('./routes/categories'),
 
 // configure cloudinary for uploading images to cloud storage
 cloudinary.config({
-    cloud_name: 'dz7ejmv18',
-    api_key: '756354461611933',
-    api_secret: 'MJ4SzYkSFjA4eLlUXwhWUf_59dU'
+    cloud_name: process.env.CLOUDNAME,
+    api_key: process.env.KEY,
+    api_secret: process.env.SECRET
 });
 
 // parse application/x-www-form-urlencoded 
@@ -43,10 +43,6 @@ app.use(require('express-session')({
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(cookieParser());
-
-// const promise = mongoose.connect('mongodb://dusmcd:nitsud181@ds247178.mlab.com:47178/sharelyfe_db', {
-//     useMongoClient: true
-// });
 
 // connect to db
 
