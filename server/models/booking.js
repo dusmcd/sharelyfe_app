@@ -1,15 +1,15 @@
-const mongoose = require('mongoose');
+const db = require('./db');
+const Sequelize = require('sequelize');
 
-const bookingSchema = mongoose.Schema({
-    author: {
-        id: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'User'
-        }
-    },
-    date: Date,
-    payment: String
-    
-}, {timestamps: true});
+const Booking = db.define('booking', {
+  date: {
+    type: Sequelize.DATE,
+    allowNull: false,
+  },
+  payment: {
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
+});
 
-module.exports = mongoose.model('Booking', bookingSchema);
+module.exports = Booking;

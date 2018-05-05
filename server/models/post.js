@@ -1,18 +1,21 @@
-var mongoose = require("mongoose");
-const bookingSchema = require('./booking').schema;
+const db = require('./db');
+const Sequelize = require('sequelize');
 
-var postSchema = mongoose.Schema({
-    image: [String],
-    title: String,
-    description: String,
-    price: String,
-    bookings: [bookingSchema],
-    author:{
-        id: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'User'
-            }
-        }   
-}, {timestamps: true});
+const Post = db.define('post', {
+  imageUrl: {
+    type: Sequelize.STRING,
+  },
+  title: {
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
+  description: {
+    type: Sequelize.STRING,
+  },
+  price: {
+    type: Sequelize.DOUBLE,
+    allowNull: false,
+  },
+});
 
-module.exports = mongoose.model("Post", postSchema);
+module.exports = Post;

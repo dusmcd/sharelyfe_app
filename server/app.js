@@ -94,6 +94,9 @@ app.use(function(req, res, next) {
 const PORT = 8080;
 
 //set up server
-app.listen(8080, 'localhost', function() {
-  console.log(`The server is listening on port ${PORT}`);
+db.sync({ force: true }).then(() => {
+  console.log('db is synced');
+  app.listen(8080, 'localhost', function() {
+    console.log(`The server is listening on port ${PORT}`);
+  });
 });

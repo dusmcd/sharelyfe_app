@@ -1,12 +1,11 @@
-var mongoose = require("mongoose");
-var postSchema = require("./post").schema;
+const db = require('./db');
+const Sequelize = require('sequelize');
 
-var categorySchema = mongoose.Schema({
-    name: String,
-    posts: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Post'
-    }]
+const Category = db.define('category', {
+  name: {
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
 });
 
-module.exports = mongoose.model("Category",categorySchema);
+module.exports = Category;
