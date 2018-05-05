@@ -2,14 +2,15 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const methodOverride = require('method-override');
+const morgan = require('morgan');
 // const mongoose = require('mongoose');
 // const Category = require('./models/category');
 // const Post = require('./models/post');
 // const User = require('./models/user'),;
 // const Booking = require('./models/booking');
-const passport = require('passport');
+// const passport = require('passport');
 const cloudinary = require('cloudinary');
-const LocalStrategy = require('passport-local');
+// const LocalStrategy = require('passport-local');
 const path = require('path');
 const { db } = require('./models'); // connect to db
 
@@ -29,12 +30,30 @@ cloudinary.config({
   api_secret: process.env.SECRET,
 });
 
-// parse application/x-www-form-urlencoded
+app.use(morgan('dev')); // logging middleware
 app.use(bodyParser.urlencoded({ extended: false }));
-
 app.use(methodOverride('_method'));
 app.set('view engine', 'ejs');
 app.use(express.static(path.join(__dirname, '..', 'public')));
+
+app.get('/', (req, res, next) => {
+  try {
+    throw 'some error';
+  } catch (err) {
+    next(err);
+  }
+});
+
+// error handling
+
+app.use((err, req, res, next) => {
+  console.error(err);
+  res.status(err.status || 500).send('<h1>Internal Server Error</h1>');
+});
+app.use((req, res, next) => {
+  res.status(404).send('<h1>Sorry that page does not exist</h1>');
+});
+
 // app.use(
 //   require('express-session')({
 //     secret: 'I read the news today, oh boy.',
@@ -52,10 +71,10 @@ app.use(express.static(path.join(__dirname, '..', 'public')));
 // passport.deserializeUser(User.deserializeUser());
 
 //current user available for all routes
-app.use(function(req, res, next) {
-  res.locals.currentUser = req.user;
-  next();
-});
+// app.use(function(req, res, next) {
+//   res.locals.currentUser = req.user;
+//   next();
+// });
 
 // app.get('/posts/:post_id', function(req, res) {
 //   // res.send('Welcome to posts/:post_id route.');
