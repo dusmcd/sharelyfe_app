@@ -1,18 +1,18 @@
-const express = require('express');
-const app = express();
-const bodyParser = require('body-parser');
-const methodOverride = require('method-override');
-const morgan = require('morgan');
+const express = require('express')
+const app = express()
+const bodyParser = require('body-parser')
+const methodOverride = require('method-override')
+const morgan = require('morgan')
 // const mongoose = require('mongoose');
 // const Category = require('./models/category');
 // const Post = require('./models/post');
 // const User = require('./models/user'),;
 // const Booking = require('./models/booking');
 // const passport = require('passport');
-const cloudinary = require('cloudinary');
+const cloudinary = require('cloudinary')
 // const LocalStrategy = require('passport-local');
-const path = require('path');
-const { db } = require('./models'); // connect to db
+const path = require('path')
+const { db } = require('./models') // connect to db
 
 //require routes
 // const categoryRoutes = require('./routes/categories'),
@@ -28,31 +28,31 @@ cloudinary.config({
   cloud_name: process.env.CLOUDNAME,
   api_key: process.env.KEY,
   api_secret: process.env.SECRET,
-});
+})
 
-app.use(morgan('dev')); // logging middleware
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(methodOverride('_method'));
-app.set('view engine', 'ejs');
-app.use(express.static(path.join(__dirname, '..', 'public')));
+app.use(morgan('dev')) // logging middleware
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(methodOverride('_method'))
+app.set('view engine', 'ejs')
+app.use(express.static(path.join(__dirname, '..', 'public')))
 
-app.get('/', (req, res, next) => {
+app.get('/some-data', (req, res, next) => {
   try {
-    throw 'some error';
+    res.json({ foo: 'bar', biz: 'baf' })
   } catch (err) {
-    next(err);
+    next(err)
   }
-});
+})
 
 // error handling
 
 app.use((err, req, res, next) => {
-  console.error(err);
-  res.status(err.status || 500).send('<h1>Internal Server Error</h1>');
-});
+  console.error(err)
+  res.status(err.status || 500).send('<h1>Internal Server Error</h1>')
+})
 app.use((req, res, next) => {
-  res.status(404).send('<h1>Sorry that page does not exist</h1>');
-});
+  res.status(404).send('<h1>Sorry that page does not exist</h1>')
+})
 
 // app.use(
 //   require('express-session')({
@@ -110,12 +110,12 @@ app.use((req, res, next) => {
 // app.use(authRoutes);
 // app.use(userRoutes);
 
-const PORT = 8080;
+const PORT = 8080
 
 //set up server
-db.sync({ force: true }).then(() => {
-  console.log('db is synced');
+db.sync().then(() => {
+  console.log('db is synced')
   app.listen(8080, 'localhost', function() {
-    console.log(`The server is listening on port ${PORT}`);
-  });
-});
+    console.log(`The server is listening on port ${PORT}`)
+  })
+})

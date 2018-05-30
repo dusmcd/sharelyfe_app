@@ -5,12 +5,13 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node app.js",
+    "start": "webpack -w & nodemon server/app.js",
     "seed": "node bin/seed.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.18.0",
     "body-parser": "^1.17.2",
     "cloudinary": "^1.10.0",
     "ejs": "^2.5.7",
@@ -24,6 +25,17 @@
     "passport-local-mongoose": "^4.2.1",
     "pg": "^7.4.2",
     "pg-hstore": "^2.3.2",
-    "sequelize": "^4.37.6"
+    "react": "^16.4.0",
+    "react-dom": "^16.4.0",
+    "sequelize": "^4.37.6",
+    "webpack": "^4.10.1",
+    "webpack-cli": "^2.1.4"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.4",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-react": "^6.24.1"
   }
 }
