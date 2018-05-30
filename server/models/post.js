@@ -1,5 +1,5 @@
-const db = require('./db');
-const Sequelize = require('sequelize');
+const db = require('./db')
+const Sequelize = require('sequelize')
 
 const Post = db.define('post', {
   imageUrl: {
@@ -16,6 +16,6 @@ const Post = db.define('post', {
     type: Sequelize.DOUBLE,
     allowNull: false,
   },
-});
+})
 
-module.exports = Post;
+module.exports = Post
