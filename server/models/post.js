@@ -8,6 +8,9 @@ const Post = db.define('post', {
   title: {
     type: Sequelize.STRING,
     allowNull: false,
+    validate: {
+      notEmpty: true,
+    },
   },
   description: {
     type: Sequelize.STRING,
@@ -15,6 +18,9 @@ const Post = db.define('post', {
   price: {
     type: Sequelize.DOUBLE,
     allowNull: false,
+    validate: {
+      notEmpty: true,
+    },
   },
 })
 

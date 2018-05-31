@@ -1,7 +1,7 @@
-const { db, Booking, Category, Post, User } = require('../server/models/index');
-const CategoryPost = db.model('category_post');
+const { db, Booking, Category, Post, User } = require('../server/models/index')
+const CategoryPost = db.model('category_post')
 
-const categories = [{ name: 'Parking' }];
+const categories = [{ name: 'Parking' }]
 
 const users = [
   {
@@ -34,7 +34,7 @@ const users = [
     phone: '555-5555',
     email: 'mswindsor@email.com',
   },
-];
+]
 
 const posts = [
   {
@@ -71,7 +71,7 @@ const posts = [
     description: 'You can park here if you really want to',
     price: 5,
   },
-];
+]
 
 const bookings = [
   { date: new Date(2018, 6, 15), payment: 'Cash' },
@@ -79,38 +79,38 @@ const bookings = [
   { date: new Date(2018, 6, 10), payment: 'Cash' },
   { date: new Date(2018, 7, 9), payment: 'Credit Card' },
   { date: new Date(2018, 8, 15), payment: 'Paypal' },
-];
+]
 
 db
   .sync({ force: true })
   .then(() => {
-    return createAllPromises();
+    return createAllPromises()
   })
   .then(results => {
-    const [categoryArr, postArr] = results;
+    const [categoryArr, postArr] = results
     const categoryMapP = postArr.map((category, i) => {
       CategoryPost.create({
         categoryId: categoryArr[0].id,
         postId: postArr[i].id,
-      });
-    });
-    return Promise.all(categoryMapP);
+      })
+    })
+    return Promise.all(categoryMapP)
   })
   .then(() => {
-    console.log('Seeding successful!');
-    db.close();
+    console.log('Seeding successful!')
+    db.close()
   })
   .catch(err => {
-    console.error(err.message);
-    db.close();
-  });
+    console.error(err.message)
+    db.close()
+  })
 
 function createUserPromises() {
   return Promise.all(
     users.map(user => {
-      return User.create(user);
+      return User.create(user)
     })
-  );
+  )
 }
 
 function createPostPromises(userPromise) {
@@ -118,46 +118,46 @@ function createPostPromises(userPromise) {
     .then(userArray => {
       return Promise.all(
         posts.map(post => {
-          const random = Math.floor(Math.random() * 5);
-          post.userId = userArray[random].id;
-          return Post.create(post);
+          const random = Math.floor(Math.random() * 5)
+          post.userId = userArray[random].id
+          return Post.create(post)
         })
-      );
+      )
     })
     .catch(err => {
-      console.error('Error coming from `createPostPromises` function');
-      console.error(err.message);
-    });
+      console.error('Error coming from `createPostPromises` function')
+      console.error(err.message)
+    })
 }
 
 function createBookingPromises(userAndPostPromise) {
   return userAndPostPromise.then(([userArray, postArray]) => {
     return Promise.all(
       bookings.map(booking => {
-        const random = Math.floor(Math.random() * 5);
-        booking.postId = postArray[random].id;
-        booking.userId = userArray[random].id;
-        return Booking.create(booking);
+        const random = Math.floor(Math.random() * 5)
+        booking.postId = postArray[random].id
+        booking.userId = userArray[random].id
+        return Booking.create(booking)
       })
-    );
-  });
+    )
+  })
 }
 
 function createCategoryPromises() {
   return Promise.all(
     categories.map(category => {
-      return Category.create(category);
+      return Category.create(category)
     })
-  );
+  )
 }
 
 function createAllPromises() {
-  const categoryP = createCategoryPromises();
-  const userP = createUserPromises();
-  const postP = createPostPromises(userP);
+  const categoryP = createCategoryPromises()
+  const userP = createUserPromises()
+  const postP = createPostPromises(userP)
 
-  const userAndPostPromise = Promise.all([userP, postP]);
-  const bookingP = createBookingPromises(userAndPostPromise);
+  const userAndPostPromise = Promise.all([userP, postP])
+  const bookingP = createBookingPromises(userAndPostPromise)
 
-  return Promise.all([categoryP, postP, bookingP]);
+  return Promise.all([categoryP, postP, bookingP])
 }

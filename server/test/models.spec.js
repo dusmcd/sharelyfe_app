@@ -14,7 +14,7 @@ describe('Category model', () => {
   afterEach(async () => {
     await db.sync({ force: true })
   })
-  it('should contain a name field', async () => {
+  it('should contain a name field', () => {
     expect(category.name).to.not.be.undefined
     expect(category.name).to.equal('Sports')
   })
@@ -44,17 +44,68 @@ describe('Category model', () => {
 })
 
 describe('Post model', () => {
+  let basketball
+  let jerry
+  let booking
   beforeEach(async () => {
     await db.sync({ force: true })
+    const basketballP = Post.create({
+      title: 'Basketball',
+      description: 'Foo bar',
+      price: 6.0,
+    })
+    const jerryP = User.create({
+      username: 'jerry',
+      name: 'Jerry Seinfeld',
+      email: 'jseinfeld@gmail.com',
+      phone: '949-555-5555',
+    })
+    const bookingP = Booking.create({
+      date: new Date(2018, 11, 10),
+      payment: 'Cash',
+    })
+    ;[basketball, jerry, booking] = await Promise.all([
+      basketballP,
+      jerryP,
+      bookingP,
+    ])
   })
   afterEach(async () => {
     await db.sync({ force: true })
   })
-  it('creates a post with all the given fields')
-  it('fails when certain fields are not given')
-  it('properly associates users')
-  it('properly associates bookings')
-  it('properly associates categories')
+  it('creates a post with all the given fields', () => {
+    expect(basketball).to.be.an('object')
+    expect(basketball.description).to.equal('Foo bar')
+    expect(basketball.price).to.equal(6.0)
+  })
+  it('fails when price is not given or is blank', () => {
+    Post.create({
+      title: 'Something',
+      price: '',
+    }).catch(err => expect(err.message).to.contain('notEmpty'))
+
+    Post.create({
+      title: 'Testing',
+    }).catch(err => expect(err.message).to.contain('notNull'))
+  })
+  it('fails when title is not given or is blank', () => {
+    Post.create({
+      title: '',
+      price: 7.6,
+    }).catch(err => expect(err.message).to.contain('notEmpty'))
+
+    Post.create({
+      price: 6.5,
+    }).catch(err => expect(err.message).to.contain('notNull'))
+  })
+  it('properly associates users', async () => {
+    await basketball.setUser(jerry)
+    expect(basketball.userId).to.equal(jerry.id)
+  })
+  it('properly associates bookings', async () => {
+    await booking.setPost(basketball)
+    expect(booking.postId).to.equal(basketball.id)
+  })
 })
 
 describe('Booking model', () => {
